@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.gaxsoftware.pdv.model.Order" table="order">
+        <id name="orderid" type="int" column="orderid">
+            <generator class="increment" />
+        </id>
+        <property name="total">
+            <column name="total" />
+        </property>
+        <property name="createdate">
+            <column name="createdate" />
+        </property>
+        <many-to-one name="status" column="status_id" not-null="true"/>
+        <many-to-one name="user" column="user_id" not-null="true"/>
+    </class>
+    <class name="Itens" table="itens">
+        <id name="id">
+            <generator class="sequence">
+                <param name="sequence">orderitem_id</param>
+            </generator>
+        </id>
+        <property name="Ucom"/>
+        <property name="Vcom"/>
+        <property name="Qcom"/>
+        <component name="name" class="Name">
+            <property name="firstName"/>
+            <property name="initial"/>
+            <property name="lastName"/>
+        </component>
+    </class>
+    
+</hibernate-mapping>
