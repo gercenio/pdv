@@ -37,10 +37,17 @@
         <property name="Codcst"/>
         <property name="Createdate"/>
         
-        <component name="name" class="Name">
-            <property name="firstName"/>
-            <property name="initial"/>
-            <property name="lastName"/>
+        <component name="product" class="Product">
+            <property name="Productid"/>
+            <property name="Description"/>
+            <property name="Code"/>
+            <property name="Ucom"/>
+            <property name="Vcom"/>
+            <property name="Valiquotaicms"/>
+            <property name="Valiquotapis"/>
+            <property name="Valiquotacofins"/>
+            <property name="Valiquotaipi"/>
+            <property name="Createdate"/>
         </component>
     </class>
     
