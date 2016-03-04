@@ -2,10 +2,14 @@ package com.gaxsoftware.pdv;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -16,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,7 +45,7 @@ public class MainWindow {
 	//protected Shell shell;
 	private Shell shell;
 	public static LoginForm loginWindow;
-	
+	JFrame mainFrame;
     JTextField usernameTxt;
     JPasswordField passwordTxt;
     JInternalFrame loginFrame;
@@ -143,7 +150,7 @@ public class MainWindow {
 	 * Open the window.
 	 */
 	public void open() {
-		//Display display = Display.getDefault();
+		Display display = Display.getDefault();
 		createContent();
 		//shell.open();
 		//shell.layout();
@@ -152,7 +159,6 @@ public class MainWindow {
 		//		display.sleep();
 		//	}
 		//}
-		
 		
 	}
 
@@ -167,15 +173,14 @@ public class MainWindow {
 	
 	protected void createContent(){
 		
-		
-        JFrame mainFrame = new JFrame("Main");
+        mainFrame = new JFrame("Main");
         mainFrame.setSize(1000,600);
         loginFrame = new JInternalFrame("Login");
         loginFrame.setSize(400,200);
         mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         JDesktopPane mainPanel = new JDesktopPane();
         JPanel loginPanel = new JPanel();
-         
+        
         JTextArea textArea = new JTextArea(25,25);
         usernameTxt = new JTextField(25);   
         passwordTxt = new JPasswordField(25);
@@ -203,7 +208,7 @@ public class MainWindow {
         Dimension jInternalFrameSize = loginFrame.getSize();
         loginFrame.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
             (desktopSize.height- jInternalFrameSize.height)/2);
-        
+                
         shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
@@ -247,6 +252,23 @@ public class MainWindow {
         			//pb2.setVisible(false);
         			//aqui quando o usuario existe na base
         			loginFrame.setVisible(false);
+        			EventQueue.invokeLater(new Runnable() {
+        	            @Override
+        	            public void run() {
+        	                try {
+        	                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        	                } catch (ClassNotFoundException ex) {
+        	                } catch (InstantiationException ex) {
+        	                } catch (IllegalAccessException ex) {
+        	                } catch (UnsupportedLookAndFeelException ex) {
+        	                }
+        	                mainFrame.add(new ClockPane());
+        	                mainFrame.pack();
+        	                mainFrame.setVisible(true);
+        	                mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        	            }
+        	        });
+        			
         			
         		}else{
         	
@@ -285,5 +307,35 @@ public class MainWindow {
             
         }
     }
-		
+
+    public class ClockPane extends JPanel {
+
+        private JLabel clock;
+
+        public ClockPane() {
+            setLayout(new BorderLayout());
+            clock = new JLabel();
+            clock.setHorizontalAlignment(JLabel.CENTER);
+            clock.setFont(UIManager.getFont("Label.font").deriveFont(Font.BOLD, 48f));
+            tickTock();
+            add(clock);
+
+            Timer timer = new Timer(500, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    tickTock();
+                }
+            });
+            timer.setRepeats(true);
+            timer.setCoalesce(true);
+            timer.setInitialDelay(0);
+            timer.start();
+        }
+
+        public void tickTock() {
+            clock.setText(DateFormat.getDateTimeInstance().format(new Date()));
+        }
+    }
 }
+
+
