@@ -1,29 +1,48 @@
 package com.gaxsoftware.pdv;
 
-//import java.sql.Date;
-//import java.sql.SQLException;
-//import java.text.SimpleDateFormat;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-//import org.hibernate.Session;
-//import org.hibernate.SessionFactory;
 
-//import com.gaxsoftware.pdv.dao.StatusDao;
-//import com.gaxsoftware.pdv.dao.UserDao;
-//import com.gaxsoftware.pdv.model.Status;
-//import com.gaxsoftware.pdv.model.User;
-//import com.gaxsoftware.pdv.util.HibernateUtil;
-//import com.gaxsoftware.pdv.util.Util;
-//import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import com.gaxsoftware.pdv.dao.UserDao;
+import com.gaxsoftware.pdv.model.User;
+import com.gaxsoftware.pdv.util.CustomDialog;
+import com.gaxsoftware.pdv.util.HibernateUtil;
+
 
 
 public class MainWindow {
 
-	protected Shell shell;
+	//protected Shell shell;
+	private Shell shell;
 	public static LoginForm loginWindow;
 	
+    JTextField usernameTxt;
+    JPasswordField passwordTxt;
+    JInternalFrame loginFrame;
+
 	@SuppressWarnings("unused")
 	public MainWindow()
 	{
@@ -46,6 +65,9 @@ public class MainWindow {
 	 * @throws java.text.ParseException 
 	 */
 	public static void main(String[] args) throws java.text.ParseException {
+		
+		
+
 		
 		/*SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session session = sf.openSession();
@@ -110,7 +132,7 @@ public class MainWindow {
 		try {
 			MainWindow window = new MainWindow();
 			window.open();
-			
+			//window.createContent();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,15 +143,17 @@ public class MainWindow {
 	 * Open the window.
 	 */
 	public void open() {
-		Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
+		//Display display = Display.getDefault();
+		createContent();
+		//shell.open();
+		//shell.layout();
+		//while (!shell.isDisposed()) {
+		//	if (!display.readAndDispatch()) {
+		//		display.sleep();
+		//	}
+		//}
+		
+		
 	}
 
 	/**
@@ -139,7 +163,127 @@ public class MainWindow {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
-
 	}
+	
+	protected void createContent(){
+		
+		
+        JFrame mainFrame = new JFrame("Main");
+        mainFrame.setSize(1000,600);
+        loginFrame = new JInternalFrame("Login");
+        loginFrame.setSize(400,200);
+        mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
+        JDesktopPane mainPanel = new JDesktopPane();
+        JPanel loginPanel = new JPanel();
+         
+        JTextArea textArea = new JTextArea(25,25);
+        usernameTxt = new JTextField(25);   
+        passwordTxt = new JPasswordField(25);
+        JLabel usernameLbl = new JLabel("Username: ");
+        JLabel passwordLbl = new JLabel("Password: ");
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new loginButtonListener());
+ 
+        mainPanel.add(textArea);
+        mainPanel.add(loginFrame);
+        loginPanel.add(usernameLbl);
+        loginPanel.add(usernameTxt);
+        loginPanel.add(passwordLbl);
+        loginPanel.add(passwordTxt);
+        loginPanel.add(loginButton);
+         
+        loginFrame.getContentPane().add(BorderLayout.CENTER,loginPanel);
+        mainFrame.getContentPane().add(BorderLayout.CENTER,mainPanel);
+        loginFrame.setVisible(true);                    
+        mainFrame.setVisible(true);
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        //login center
+        Dimension desktopSize = mainFrame.getSize();
+        Dimension jInternalFrameSize = loginFrame.getSize();
+        loginFrame.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+            (desktopSize.height- jInternalFrameSize.height)/2);
+        
+        shell = new Shell();
+		shell.setSize(450, 300);
+		shell.setText("SWT Application");
+		
+ 
+    }
 
+	public class loginButtonListener implements ActionListener{
+        public void actionPerformed(ActionEvent ev)
+        {
+        	
+        	if(usernameTxt.getText().length() == 0)
+        	{
+        	
+        		CustomDialog msg = new CustomDialog();
+        		msg.setTitle("Gax Software");
+        		msg.setOptions(new String[] { "OK"});
+            	msg.addMessageText("Preencha os dados corretamente...");
+            	msg.show();
+            	
+        	}
+        	else if(passwordTxt.getText().length() == 0)
+        	{
+        	
+        		CustomDialog msg = new CustomDialog();
+        		msg.setTitle("Gax Software");
+        		msg.setOptions(new String[] { "OK"});
+            	msg.addMessageText("Preencha os dados corretamente...");
+            	msg.show();
+            	
+        	}else if(passwordTxt.getText().length() !=0 && usernameTxt.getText().length() !=0)
+        	{
+        		SessionFactory sf = HibernateUtil.getSessionFactory();
+        		Session session = sf.openSession();
+        		session.beginTransaction();
+        		
+        		UserDao dao = new UserDao();
+        		User user = dao.getUserByName(usernameTxt.getText());
+        		if(user != null)
+        		{
+        			//pb2.setVisible(false);
+        			//aqui quando o usuario existe na base
+        			loginFrame.setVisible(false);
+        			
+        		}else{
+        	
+        			CustomDialog msg = new CustomDialog();
+            		msg.setTitle("Gax Software");
+            		msg.setOptions(new String[] { "OK"});
+                	msg.addMessageText("Usuario não encontrado...");
+                	msg.show();
+        		}
+        		session.close();
+        		
+        	}
+        	
+        		
+            //if username and password is good hide child window
+        	//if(usernameTxt.getText().toString() == null)
+        	//{
+        			
+            	//usernameTxt.setFocusTraversalPolicyProvider(true);
+        	//}
+        	//else{
+        		
+        		//loginFrame.setVisible(false);
+        	//}
+        	
+        	//if(usernameTxt.getText().toString() != null && passwordTxt.getPassword().toString() !=null)
+        	//{
+        	//	loginFrame.setVisible(false);
+        		
+        	//}else{
+        	//	CustomDialog msg = new CustomDialog();
+        	//	msg.addMessageText("Preencha os dados corretamente");
+        	//	msg.show();
+        		
+        	//}
+            
+        }
+    }
+		
 }

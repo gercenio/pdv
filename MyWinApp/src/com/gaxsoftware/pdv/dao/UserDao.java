@@ -100,5 +100,27 @@ public class UserDao {
         }
         return user;
     }
+    
+    public User getUserByName(String name)
+    {
+        User user = null;
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+        	trns = session.beginTransaction();
+            String queryString = "from User where firstName = :firstname";
+            Query query = session.createQuery(queryString);
+            query.setString("firstname", name);
+            user = (User) query.list().get(0);
+            
+        }catch(RuntimeException e){
+        	e.printStackTrace();
+        }
+        finally {
+            session.flush();
+            session.close();
+        }
+    	return user;
+    }
 
 }
