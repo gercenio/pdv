@@ -49,6 +49,7 @@ public class MainWindow {
     JTextField usernameTxt;
     JPasswordField passwordTxt;
     JInternalFrame loginFrame;
+    JDesktopPane mainPanel;
 
 	@SuppressWarnings("unused")
 	public MainWindow()
@@ -178,7 +179,7 @@ public class MainWindow {
         loginFrame = new JInternalFrame("Login");
         loginFrame.setSize(400,200);
         mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
-        JDesktopPane mainPanel = new JDesktopPane();
+        mainPanel = new JDesktopPane();
         JPanel loginPanel = new JPanel();
         
         JTextArea textArea = new JTextArea(25,25);
@@ -262,7 +263,8 @@ public class MainWindow {
         	                } catch (IllegalAccessException ex) {
         	                } catch (UnsupportedLookAndFeelException ex) {
         	                }
-        	                mainFrame.add(new ClockPane());
+        	                mainFrame.getContentPane().add(BorderLayout.PAGE_START, new ClockPane());
+        	                mainFrame.getContentPane().add(BorderLayout.AFTER_LINE_ENDS, new panelProduct());
         	                mainFrame.pack();
         	                mainFrame.setVisible(true);
         	                mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -307,7 +309,17 @@ public class MainWindow {
             
         }
     }
-
+	
+	public class panelProduct extends JPanel{
+		private JTextField productTxt;
+		
+		public panelProduct(){
+			setLayout(new BorderLayout());
+			productTxt = new JTextField(25);
+			add(productTxt);
+		}
+	} 
+	
     public class ClockPane extends JPanel {
 
         private JLabel clock;
