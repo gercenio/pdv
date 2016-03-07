@@ -8,7 +8,7 @@
         <id name="statusid" type="int" column="statusid">
             <generator class="increment" />
         </id>
-        <property name="Statusds">
+        <property name="statusds">
             <column name="statusds" />
         </property>
     </class>

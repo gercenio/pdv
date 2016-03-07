@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/03/2016 15:19:26 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.gaxsoftware.pdv.model.OrderItem" table="ORDERITEM">
+        <id name="orderitemid" type="int">
+            <column name="ORDERITEMID" />
+            <generator class="assigned" />
+        </id>
+        <one-to-one name="product" class="com.gaxsoftware.pdv.model.Product"></one-to-one>
+        <many-to-one name="order" class="com.gaxsoftware.pdv.model.Order" fetch="join">
+            <column name="ORDER" />
+        </many-to-one>
+        <property name="ucom" type="java.lang.String">
+            <column name="UCOM" />
+        </property>
+        <property name="vcom" type="double">
+            <column name="VCOM" />
+        </property>
+        <property name="qcom" type="double">
+            <column name="QCOM" />
+        </property>
+        <property name="vicms" type="double">
+            <column name="VICMS" />
+        </property>
+        <property name="vipi" type="double">
+            <column name="VIPI" />
+        </property>
+        <property name="vcofins" type="double">
+            <column name="VCOFINS" />
+        </property>
+        <property name="vpis" type="double">
+            <column name="VPIS" />
+        </property>
+        <property name="valiquotaicms" type="double">
+            <column name="VALIQUOTAICMS" />
+        </property>
+        <property name="valiquotaipi" type="double">
+            <column name="VALIQUOTAIPI" />
+        </property>
+        <property name="valiquotapis" type="double">
+            <column name="VALIQUOTAPIS" />
+        </property>
+        <property name="valiquotacofins" type="double">
+            <column name="VALIQUOTACOFINS" />
+        </property>
+        <property name="codcst" type="java.lang.String">
+            <column name="CODCST" />
+        </property>
+        <property name="createdate" type="java.sql.Date">
+            <column name="CREATEDATE" />
+        </property>
+    </class>
+</hibernate-mapping>

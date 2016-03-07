@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/03/2016 15:19:26 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.gaxsoftware.pdv.model.OrderPayments" table="ORDERPAYMENTS">
+        <id name="orderpaymentid" type="int" access="field">
+            <column name="ORDERPAYMENTID" />
+            <generator class="assigned" />
+        </id>
+        <property name="value" type="double">
+            <column name="VALUE" />
+        </property>
+        <property name="createdate" type="java.sql.Date">
+            <column name="CREATEDATE" />
+        </property>
+        <many-to-one name="order" class="com.gaxsoftware.pdv.model.Order" fetch="join">
+            <column name="ORDER" />
+        </many-to-one>
+        <one-to-one name="payment" class="com.gaxsoftware.pdv.model.Payment"></one-to-one>
+    </class>
+</hibernate-mapping>

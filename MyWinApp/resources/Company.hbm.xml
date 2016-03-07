@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/03/2016 15:19:26 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.gaxsoftware.pdv.model.Company" table="COMPANY">
+        <id name="companyid" type="int">
+            <column name="COMPANYID" />
+            <generator class="assigned" />
+        </id>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="cnpj" type="java.lang.String">
+            <column name="CNPJ" />
+        </property>
+        <property name="ie" type="java.lang.String">
+            <column name="IE" />
+        </property>
+        <property name="im" type="java.lang.String">
+            <column name="IM" />
+        </property>
+        <property name="nomefantasia" type="java.lang.String">
+            <column name="NOMEFANTASIA" />
+        </property>
+        <property name="singnatureacsat" type="java.lang.String">
+            <column name="SINGNATUREACSAT" />
+        </property>
+        <one-to-one name="endereco" class="com.gaxsoftware.pdv.model.CompanyAddress"></one-to-one>
+        <one-to-one name="softwarehouse" class="com.gaxsoftware.pdv.model.Softwarehouse"></one-to-one>
+    </class>
+</hibernate-mapping>

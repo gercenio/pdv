@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/03/2016 15:19:26 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.gaxsoftware.pdv.model.CompanyAddress" table="COMPANYADDRESS">
+        <id name="companyaddressid" type="int" access="field">
+            <column name="COMPANYADDRESSID" />
+            <generator class="assigned" />
+        </id>
+        <one-to-one name="company" class="com.gaxsoftware.pdv.model.Company"></one-to-one>
+        <property name="cep" type="java.lang.String">
+            <column name="CEP" />
+        </property>
+        <property name="logradouro" type="java.lang.String">
+            <column name="LOGRADOURO" />
+        </property>
+        <property name="numero" type="java.lang.String">
+            <column name="NUMERO" />
+        </property>
+        <property name="complemento" type="java.lang.String">
+            <column name="COMPLEMENTO" />
+        </property>
+        <property name="bairro" type="java.lang.String">
+            <column name="BAIRRO" />
+        </property>
+        <property name="municipioid" type="java.lang.String">
+            <column name="MUNICIPIOID" />
+        </property>
+        <property name="municipiods" type="java.lang.String">
+            <column name="MUNICIPIODS" />
+        </property>
+        <property name="estadoid" type="java.lang.String">
+            <column name="ESTADOID" />
+        </property>
+        <property name="estadods" type="java.lang.String">
+            <column name="ESTADODS" />
+        </property>
+    </class>
+</hibernate-mapping>

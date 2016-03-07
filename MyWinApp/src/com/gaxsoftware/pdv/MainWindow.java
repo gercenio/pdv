@@ -264,7 +264,7 @@ public class MainWindow {
         	                } catch (UnsupportedLookAndFeelException ex) {
         	                }
         	                mainFrame.getContentPane().add(BorderLayout.PAGE_START, new ClockPane());
-        	                mainFrame.getContentPane().add(BorderLayout.AFTER_LINE_ENDS, new panelProduct());
+        	                mainFrame.getContentPane().add(BorderLayout.CENTER, new panelProduct());
         	                mainFrame.pack();
         	                mainFrame.setVisible(true);
         	                mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
