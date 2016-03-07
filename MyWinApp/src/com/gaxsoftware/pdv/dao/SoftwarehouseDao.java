@@ -1,5 +1,8 @@
 package com.gaxsoftware.pdv.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -44,6 +47,40 @@ public class SoftwarehouseDao {
             session.flush();
             session.close();
         }
+    }
+	
+	public void updateSoftwarehouse(Softwarehouse soft) {
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            session.update(soft);
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+    }
+	
+	public List<Softwarehouse> getAllSoftwarehouse() {
+        List<Softwarehouse> softs = new ArrayList<Softwarehouse>();
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            softs = session.createQuery("from Softwarehouse").list();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+        return softs;
     }
 
 }

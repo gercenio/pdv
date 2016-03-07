@@ -33,7 +33,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.gaxsoftware.pdv.dao.SoftwarehouseDao;
 import com.gaxsoftware.pdv.dao.UserDao;
+import com.gaxsoftware.pdv.model.Softwarehouse;
 import com.gaxsoftware.pdv.model.User;
 import com.gaxsoftware.pdv.util.CustomDialog;
 import com.gaxsoftware.pdv.util.HibernateUtil;
@@ -250,6 +252,12 @@ public class MainWindow {
         		User user = dao.getUserByName(usernameTxt.getText());
         		if(user != null)
         		{
+        			SoftwarehouseDao SoftDao = new SoftwarehouseDao();
+        			Softwarehouse sof = new Softwarehouse();
+        			sof.setDescription("GAX SOFTWARE");
+        			sof.setDocument("14.135.113/0001-09");
+        			SoftDao.addSoftware(sof);
+        			
         			//pb2.setVisible(false);
         			//aqui quando o usuario existe na base
         			loginFrame.setVisible(false);
