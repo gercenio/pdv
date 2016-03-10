@@ -53,8 +53,6 @@ import com.gaxsoftware.pdv.model.User;
 import com.gaxsoftware.pdv.util.CustomDialog;
 import com.gaxsoftware.pdv.util.HibernateUtil;
 import com.gaxsoftware.pdv.util.Util;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 
 
 public class MainWindow {
@@ -258,13 +256,6 @@ public class MainWindow {
  
     }
 
-	public class productButtonListener implements ActionListener{
-		  public void actionPerformed(ActionEvent ev)
-	      {
-			  
-	      }
-	}
-	
 	public class loginButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent ev)
         {
@@ -380,7 +371,6 @@ public class MainWindow {
 			gridData.horizontalAlignment = SWT.FILL;
 			gridData.grabExcessHorizontalSpace = true;
 			add(lblTitle,c);
-			
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			setPreferredSize(new Dimension(screenSize.width, screenSize.height));
 			setBackground(new Color(85,153,187));
@@ -389,6 +379,7 @@ public class MainWindow {
 	
 	public class panelProduct extends JPanel{
 		private JTextField productTxt;
+		private JLabel lblConteudo;
 		
 		public panelProduct(){
 			setLayout(new GridBagLayout());
@@ -407,13 +398,20 @@ public class MainWindow {
 					      }
 			});
 			add(productTxt, c);
+			
+			lblConteudo = new JLabel("RS 1,49 X 1 = R$ 1,49");
+			lblConteudo.setForeground(Color.white);
+			c.gridx = 1;
+			c.gridy = 0;
+			add(lblConteudo, c);
 			setPreferredSize(new Dimension(500, 500));
 			setBackground(new Color(85,153,187));
 		
 		}
 	} 
 	
-    public class ClockPane extends JPanel {
+    
+	public class ClockPane extends JPanel {
 
         private JLabel clock;
 
