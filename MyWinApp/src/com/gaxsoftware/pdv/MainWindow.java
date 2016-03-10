@@ -1,14 +1,26 @@
 package com.gaxsoftware.pdv;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.LayoutManager;
+import java.awt.List;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -26,10 +38,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-
+import org.eclipse.swt.widgets.Text;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -39,6 +52,8 @@ import com.gaxsoftware.pdv.model.Softwarehouse;
 import com.gaxsoftware.pdv.model.User;
 import com.gaxsoftware.pdv.util.CustomDialog;
 import com.gaxsoftware.pdv.util.HibernateUtil;
+import com.gaxsoftware.pdv.util.Util;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 
 
@@ -52,6 +67,9 @@ public class MainWindow {
     JPasswordField passwordTxt;
     JInternalFrame loginFrame;
     JDesktopPane mainPanel;
+    public static SessionFactory sf;
+    public static Session session;
+    public ProgressBar progressBar; 
 
 	@SuppressWarnings("unused")
 	public MainWindow()
@@ -77,7 +95,28 @@ public class MainWindow {
 	public static void main(String[] args) throws java.text.ParseException {
 		
 		
-
+		sf = HibernateUtil.getSessionFactory();
+		session = sf.openSession();
+		session.beginTransaction();
+		
+		/*UserDao dao = new UserDao();
+		
+		User user = new User();
+		user.setFirstName("Gercenio");
+		user.setLastName("Xavier");
+		try {
+			Date dob = Util.convertJavaDateToSqlDate(new SimpleDateFormat("yyyy-MM-dd").parse("2014-05-13"));
+		user.setDob(dob);
+		} catch (ParseException e) {
+		e.printStackTrace();
+		}
+		user.setEmail("gercenio@gmail.com");
+		dao.addUser(user);
+		System.out.println("User is added successfully into DB");
+		
+		session.getTransaction().commit();
+		session.save(user);
+		session.close();*/
 		
 		/*SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session session = sf.openSession();
@@ -219,6 +258,13 @@ public class MainWindow {
  
     }
 
+	public class productButtonListener implements ActionListener{
+		  public void actionPerformed(ActionEvent ev)
+	      {
+			  
+	      }
+	}
+	
 	public class loginButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent ev)
         {
@@ -244,19 +290,19 @@ public class MainWindow {
             	
         	}else if(passwordTxt.getText().length() !=0 && usernameTxt.getText().length() !=0)
         	{
-        		SessionFactory sf = HibernateUtil.getSessionFactory();
-        		Session session = sf.openSession();
-        		session.beginTransaction();
+        		//SessionFactory sf = HibernateUtil.getSessionFactory();
+        		//Session session = sf.openSession();
+        		//session.beginTransaction();
         		
         		UserDao dao = new UserDao();
         		User user = dao.getUserByName(usernameTxt.getText());
         		if(user != null)
         		{
-        			SoftwarehouseDao SoftDao = new SoftwarehouseDao();
-        			Softwarehouse sof = new Softwarehouse();
-        			sof.setDescription("GAX SOFTWARE");
-        			sof.setDocument("14.135.113/0001-09");
-        			SoftDao.addSoftware(sof);
+        			//SoftwarehouseDao SoftDao = new SoftwarehouseDao();
+        			//Softwarehouse sof = new Softwarehouse();
+        			//sof.setDescription("GAX SOFTWARE");
+        			//sof.setDocument("14.135.113/0001-09");
+        			//SoftDao.addSoftware(sof);
         			
         			//pb2.setVisible(false);
         			//aqui quando o usuario existe na base
@@ -272,7 +318,8 @@ public class MainWindow {
         	                } catch (UnsupportedLookAndFeelException ex) {
         	                }
         	                mainFrame.getContentPane().add(BorderLayout.PAGE_START, new ClockPane());
-        	                mainFrame.getContentPane().add(BorderLayout.CENTER, new panelProduct());
+        	                mainFrame.getContentPane().add(BorderLayout.WEST, new panelProduct());
+        	                mainFrame.getContentPane().add(BorderLayout.EAST,new panelCupom());
         	                mainFrame.pack();
         	                mainFrame.setVisible(true);
         	                mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -318,13 +365,51 @@ public class MainWindow {
         }
     }
 	
+	public class panelCupom extends JPanel{
+		GridData gridData;
+		JLabel lblTitle;
+		
+		public panelCupom(){
+			setLayout(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.gridy = 0;
+			lblTitle = new JLabel("titulo");
+			lblTitle.setText("titulo");
+			gridData = new GridData();
+			gridData.horizontalAlignment = SWT.FILL;
+			gridData.grabExcessHorizontalSpace = true;
+			add(lblTitle,c);
+			
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+			setBackground(new Color(85,153,187));
+		}
+	}
+	
 	public class panelProduct extends JPanel{
 		private JTextField productTxt;
 		
 		public panelProduct(){
-			setLayout(new BorderLayout());
-			productTxt = new JTextField(25);
-			add(productTxt);
+			setLayout(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.gridy = 0;
+			productTxt = new JTextField();
+			productTxt.setPreferredSize(new Dimension(250,32));
+			productTxt.addActionListener(
+					new ActionListener() {
+					      public void actionPerformed(ActionEvent e) {
+					        //System.out.println("Text=" + productTxt.getText());
+					    	  CustomDialog msg = new CustomDialog();
+					    	  msg.addMessageText("Achou o produto...");
+					       	  msg.show();
+					      }
+			});
+			add(productTxt, c);
+			setPreferredSize(new Dimension(500, 500));
+			setBackground(new Color(85,153,187));
+		
 		}
 	} 
 	
@@ -337,6 +422,9 @@ public class MainWindow {
             clock = new JLabel();
             clock.setHorizontalAlignment(JLabel.CENTER);
             clock.setFont(UIManager.getFont("Label.font").deriveFont(Font.BOLD, 48f));
+            clock.setBackground(Color.WHITE);
+            clock.setForeground(Color.white);
+            setBackground(new Color(85,153,187));
             tickTock();
             add(clock);
 
